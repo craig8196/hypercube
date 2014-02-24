@@ -1,0 +1,14 @@
+Using only sends and receives, write the MPI code to implement vector reduce and vector broadcast.
+Your algorithm should work for any number of processors and be able to 
+reduce the answer to any node or broadcast from any node.
+
+Show that your algorithm works for various numbers of nodes, reduction targets, broadcast origins, and vector sizes.
+
+Determine and graph the average time to perform a reduce and broadcast using your algorithms for vectors of 1 number each to vectors of 65K numbers each.  
+When timing, use 3, 6, 9 and 15 independent nodes and reduce to or broadcast from node 5.
+
+Draw conclusions about the graphs and determine the maximum bandwidth of each machine.
+
+Write a 1-2 page report detailing your solution and include a graph of your performance results.
+Email the report to <cs484.snell at gmail.com> as a pdf.
+
