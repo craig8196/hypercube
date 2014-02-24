@@ -4,6 +4,7 @@
 #include <math.h>
 
 double get_seconds();
+int get_dimension(int num);
 void MPI_Broadcast_Hypercube(void* buffer, int count, MPI_Datatype datatype, int iproc, int nproc, int from_proc, MPI_Comm comm);
 void MPI_Reduce_Hypercube(void* sendbuf, void* recvbuf, int count, MPI_Datatype datatype, MPI_Op op, int iproc, int nproc, int from_proc, MPI_Comm comm);
 
@@ -18,7 +19,7 @@ main(int argc, char *argv[])
     double start_time;
     double average_latency;
     int number_of_iterations = 2;
-    int sizes_of_data[5] = {1, 4};//512};//, 4096, 32768, 65536};
+    int sizes_of_data[5] = {1, 32768};//512};//, 4096, 32768, 65536};
     double** data = malloc(sizeof(double*)*number_of_iterations);
     double** receive_buffer = malloc(sizeof(double*)*number_of_iterations);
     for(i = 0; i < number_of_iterations; i++)
@@ -102,7 +103,7 @@ main(int argc, char *argv[])
         // computes the run times of a log broadcast
         MPI_Barrier(MPI_COMM_WORLD);
         start_time = get_seconds();
-        MPI_Broadcast_Hypercube(buffer, count, MPI_Datatype datatype, iproc, nproc, 0, MPI_Comm comm);
+        MPI_Broadcast_Hypercube(buffer, count, MPI_DOUBLE, iproc, nproc, 0, MPI_COMM_WORLD);
         if(iproc == 0) 
             printf("%d: log broadcast time: %lf\n", iproc, (get_seconds()-start_time));
         
@@ -144,7 +145,7 @@ main(int argc, char *argv[])
 void MPI_Broadcast_Hypercube(void* buffer, int count, MPI_Datatype datatype, int iproc, int nproc, int from_proc, MPI_Comm comm)
 {
     if(nproc == 1) return;
-    
+    MPI_Status status; 
     iproc = (iproc - from_proc) % nproc;
     
     int i;
@@ -194,4 +195,12 @@ double get_seconds()
     return ((double) tp.tv_sec + (double) tp.tv_usec * 1e-6);
 }
 
-
+int get_dimension(int num)
+{
+    int dimension = 0;
+    for(dimension = 0; num > 0;dimension++)
+    {
+        num = num >> 1;
+    }
+    return dimension;
+}

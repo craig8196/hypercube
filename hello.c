@@ -15,22 +15,6 @@ main(int argc, char *argv[])
     gethostname(host,253);
     printf("I am proc %d of %d running on %s\n", iproc, nproc,host);
 
-    printf("Sending messages\n");
-    sprintf(message, "%d: Hello\n", iproc);
-    for (i = 0; i < nproc; i++)
-    {
-        if (i != iproc)
-            MPI_Send(message, 35, MPI_CHAR, i, 0, MPI_COMM_WORLD);
-    }
-    printf("Receiving messages\n");
-    for (i = 0; i < nproc; i++)
-    {
-        if (i != iproc)
-        {
-            MPI_Recv(message, 35, MPI_CHAR, i, 0, MPI_COMM_WORLD, &status);
-            printf("%d: %s",iproc, message);
-        }
-    }
-
     MPI_Finalize();
 }
+

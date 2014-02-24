@@ -21,7 +21,7 @@ main(int argc, char *argv[])
         sprintf(message, "%d: Hello\n", iproc);
         MPI_Send(message, 35, MPI_CHAR, 0, 0, MPI_COMM_WORLD);
     }
-    if(iproc == 0)
+    else
     {
         printf("Receiving messages\n");
         for (i = 0; i < nproc; i++)
@@ -36,3 +36,4 @@ main(int argc, char *argv[])
 
     MPI_Finalize();
 }
+
