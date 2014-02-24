@@ -3,7 +3,7 @@ MPI_INCL        = $(MPI_HOME)/include
 MPI_LIB         = $(MPI_HOME)/lib
 
 SRC   			= all.c
-TARGET     		= hello
+TARGET     		= hyp
 
 CC         		= $(MPI_HOME)/bin/mpicc
 CFLAGS			= -O -I$(MPI_INCL)
