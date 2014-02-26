@@ -138,12 +138,6 @@ main(int argc, char *argv[])
         }
     }
     
-    
-
-    
-    
-    
-    
     // free allocated memory
     for(i = 0; i < number_of_iterations; i++)
     {
@@ -240,6 +234,7 @@ void MPI_Reduce_Hypercube(void* sendbuf, void* recvbuf, int count, MPI_Datatype 
                             for(j = 0; j < count; j++)
                             {
                                 *(sendbuf + j) = *(sendbuf + j) + *(recvbuf + j);
+                                *(recvbuf + j) = *(sendbuf + j);
                             }
                         }
                     }
