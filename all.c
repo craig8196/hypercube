@@ -228,13 +228,15 @@ void MPI_Reduce_Hypercube(void* sendbuf, void* recvbuf, int count, MPI_Datatype 
                     MPI_Recv(recvbuf, count, datatype, my_neighbor, 0, comm, &status);
                     if(datatype == MPI_DOUBLE)
                     {
+                        double* sbuf = (double*) sendbuf;
+                        double* rbuf = (double*) recvbuf;
                         // perform a sum reduce
                         if(op == MPI_SUM)
                         {
                             for(j = 0; j < count; j++)
                             {
-                                *(sendbuf + j) = *(sendbuf + j) + *(recvbuf + j);
-                                *(recvbuf + j) = *(sendbuf + j);
+                                *(sbuf + j) = *(sbuf + j) + *(rbuf + j);
+                                *(rbuf + j) = *(sbuf + j);
                             }
                         }
                     }
