@@ -41,8 +41,9 @@ main(int argc, char *argv[])
     {
         exit(0);
     }
-    
+    /*
     broadcast_proc = broadcast_proc % nproc;
+    reduce_proc = reduce_proc % nproc;
     // only the broadcast process will initialize the array as a sanity check
     if(iproc == broadcast_proc)
     {
@@ -54,7 +55,7 @@ main(int argc, char *argv[])
             }
         }
     }
-    
+    */
     // print which machine this proc is running on
     gethostname(host,253);
     printf("I am proc %d of %d running on %s\n", iproc, nproc,host);
@@ -82,7 +83,7 @@ main(int argc, char *argv[])
         }
     }
     
-    
+    /*
     // for different array sizes do the following broadcasts and reductions
     for(iteration = 0; iteration < number_of_iterations; iteration++)
     {
@@ -93,14 +94,14 @@ main(int argc, char *argv[])
         // computes the run times of a linear broadcast
         MPI_Barrier(MPI_COMM_WORLD);
         start_time = get_seconds();
-        MPI_Bcast(buffer, count, MPI_DOUBLE, 0, MPI_COMM_WORLD);
+        MPI_Bcast(buffer, count, MPI_DOUBLE, broadcast_proc, MPI_COMM_WORLD);
         if(iproc == broadcast_proc) 
             printf("%d, %lf,  mpi broadcast time\n", iproc, (get_seconds()-start_time));
         
         // computes the run times of linear reduction
         MPI_Barrier(MPI_COMM_WORLD);
         start_time = get_seconds();
-        MPI_Reduce(buffer, recv_buf, count, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
+        MPI_Reduce(buffer, recv_buf, count, MPI_DOUBLE, MPI_SUM, reduce_proc, MPI_COMM_WORLD);
         if(iproc == reduce_proc) 
             printf("%d, %lf, mpi reduce time\n", iproc, (get_seconds()-start_time));
         
@@ -117,15 +118,15 @@ main(int argc, char *argv[])
         // computes the run times of a log broadcast
         MPI_Barrier(MPI_COMM_WORLD);
         start_time = get_seconds();
-        MPI_Broadcast_Hypercube(buffer, count, MPI_DOUBLE, iproc, nproc, 0, MPI_COMM_WORLD);
+        MPI_Broadcast_Hypercube(buffer, count, MPI_DOUBLE, iproc, nproc, broadcast_proc, MPI_COMM_WORLD);
         if(iproc == broadcast_proc) 
             printf("%d, %lf, log broadcast time\n", iproc, (get_seconds()-start_time));
         
         // computes the run times of a log reduction
         MPI_Barrier(MPI_COMM_WORLD);
         start_time = get_seconds();
-        MPI_Reduce_Hypercube(buffer, recv_buf, count, MPI_DOUBLE, MPI_SUM, 0, MPI_COMM_WORLD);
-        if(iproc == reduc_proc) 
+        MPI_Reduce_Hypercube(buffer, recv_buf, count, MPI_DOUBLE, MPI_SUM, iproc, nproc, reduce_proc, MPI_COMM_WORLD);
+        if(iproc == reduce_proc) 
             printf("%d, %lf, log reduce time\n", iproc, (get_seconds()-start_time));
         
         if(iproc == reduce_proc)
@@ -137,7 +138,7 @@ main(int argc, char *argv[])
             }
         }
     }
-    
+    */
     // free allocated memory
     for(i = 0; i < number_of_iterations; i++)
     {
