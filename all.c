@@ -41,7 +41,7 @@ main(int argc, char *argv[])
     {
         exit(0);
     }
-    /*
+    
     broadcast_proc = broadcast_proc % nproc;
     reduce_proc = reduce_proc % nproc;
     // only the broadcast process will initialize the array as a sanity check
@@ -55,7 +55,7 @@ main(int argc, char *argv[])
             }
         }
     }
-    */
+    
     // print which machine this proc is running on
     gethostname(host,253);
     printf("I am proc %d of %d running on %s\n", iproc, nproc,host);
@@ -76,14 +76,18 @@ main(int argc, char *argv[])
     }
     else if(iproc == 1)
     {
+        printf("%d starting ping pong (latency test)\n", iproc);
+        start_time = get_seconds();
         for(i = 0; i < 1000; i++)
         {
             MPI_Recv(one_byte_array, 1, MPI_CHAR, 0, 0, MPI_COMM_WORLD, &status);
             MPI_Send(one_byte_array, 1, MPI_CHAR, 0, 0, MPI_COMM_WORLD);
         }
+        average_latency = (get_seconds() - start_time)/2000.0;
+        printf("%d, %lf, average_latency\n", iproc, average_latency);
     }
     
-    /*
+    
     // for different array sizes do the following broadcasts and reductions
     for(iteration = 0; iteration < number_of_iterations; iteration++)
     {
@@ -114,7 +118,7 @@ main(int argc, char *argv[])
                     printf("%d: warning! reduced[%d] = %lf is incorrect", iproc, i, (*receive_buffer)[i]);
             }
         }
-        
+        /*
         // computes the run times of a log broadcast
         MPI_Barrier(MPI_COMM_WORLD);
         start_time = get_seconds();
@@ -137,8 +141,9 @@ main(int argc, char *argv[])
                     printf("%d: warning! reduced[%d] = %lf is incorrect", iproc, i, (*receive_buffer)[i]);
             }
         }
+        */
     }
-    */
+    
     // free allocated memory
     for(i = 0; i < number_of_iterations; i++)
     {
